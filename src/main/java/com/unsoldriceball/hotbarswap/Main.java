@@ -1,6 +1,5 @@
 package com.unsoldriceball.hotbarswap;
 
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -15,21 +14,27 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
+
+
 @Mod(modid = Main.MOD_ID, acceptableRemoteVersions = "*")
 public class Main
 {
     final public static String MOD_ID = "hotbarswap";
+
     private Configuration cfg;
-    public static boolean PLAY_SOUND;
-    public static int TARGET_SLOT;
-    public static SimpleNetworkWrapper networkWrapper;
+    public static boolean play_sound;
+    public static int target_slot;
+    public static SimpleNetworkWrapper network_wrapper;
 
 
 
+
+    //ModがInitializeを呼び出す前に発生するイベント。
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) //ModがInitializeを呼び出す前に発生するイベント。
+    public void preInit(FMLPreInitializationEvent event)
     {
-        MinecraftForge.EVENT_BUS.register(this); //これでこのクラス内でForgeのイベントが動作するようになるらしい。
+        //これでこのクラス内でForgeのイベントが動作するようになるらしい。
+        MinecraftForge.EVENT_BUS.register(this);
 
         //Configを起動
         cfg = new Configuration(event.getSuggestedConfigurationFile());
@@ -37,25 +42,29 @@ public class Main
 
         if (event.getSide() == Side.CLIENT)
         {
-            KeyBind.init(); //キーバインドを初期化
+            //キーバインドを初期化
+            KeyBind.init();
         }
         //---
 
-        networkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel("hotbarswap_packet");
-        networkWrapper.registerMessage(Packet.Handler.class, Packet.class, 0, Side.SERVER);
+        //パケットを送る準備。
+        network_wrapper = NetworkRegistry.INSTANCE.newSimpleChannel("hotbarswap_packet");
+        network_wrapper.registerMessage(Packet.Handler.class, Packet.class, 0, Side.SERVER);
     }
 
 
 
     //Config読み込み関数
-    private void loadConfig(){
+    private void loadConfig()
+    {
         cfg.load();
-        PLAY_SOUND = cfg.get("general", "C_PLAY_SOUND", true).getBoolean();
-        TARGET_SLOT = cfg.get("general", "C_TARGET_SLOT", 1).getInt();
+        play_sound = cfg.get("general", "C_PLAY_SOUND", true).getBoolean();
+        target_slot = cfg.get("general", "C_TARGET_SLOT", 1).getInt();
     }
 
 
 
+    //キーが押されたときのイベント
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onKeyInput(KeyInputEvent event)
@@ -63,8 +72,8 @@ public class Main
         if (KeyBind.key_hotbarswap.isPressed())
         {
             //仕方がないのでPacketを送信する。それ以外の手段は見つからなかった。
-            final EntityPlayer P = Minecraft.getMinecraft().player;
-            networkWrapper.sendToServer(new Packet(P.getUniqueID(), P.dimension));
+            final EntityPlayer LP = Minecraft.getMinecraft().player;
+            network_wrapper.sendToServer(new Packet(LP.getUniqueID(), LP.dimension));
         }
     }
 }

@@ -1,8 +1,7 @@
 package com.unsoldriceball.hotbarswap;
 
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
 
 
 @SuppressWarnings("unused")

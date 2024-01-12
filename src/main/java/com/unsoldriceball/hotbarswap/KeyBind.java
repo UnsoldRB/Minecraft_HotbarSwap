@@ -6,11 +6,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+
+
+
 @SideOnly(Side.CLIENT)
 public class KeyBind
 {
     public static KeyBinding key_hotbarswap;
 
+
+
+
+    //preInitで呼び出されるキーバインドの初期化イベント。
     public static void init()
     {
         // キーバインドを作成
