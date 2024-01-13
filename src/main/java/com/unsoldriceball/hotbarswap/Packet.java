@@ -75,11 +75,11 @@ public class Packet implements IMessage
         public IMessage onMessage(Packet message, MessageContext ctx)
         {
             //messageからデータを読み取る。
-            UUID uuid = message.uuid;
-            int dim = message.dim;
+            final UUID L_UUID = message.uuid;
+            final int L_DIM = message.dim;
 
 
-            final EntityPlayer LP = DimensionManager.getWorld(dim).getPlayerEntityByUUID(uuid);
+            final EntityPlayer LP = DimensionManager.getWorld(L_DIM).getPlayerEntityByUUID(L_UUID);
 
             //プレイヤーが存在した場合(プレイヤーのデータを正常に読み取れた場合)
             if (LP != null)
@@ -106,13 +106,13 @@ public class Packet implements IMessage
         //指定したスロット同士のアイテムを入れ替える関数。
         public static void swapItem(EntityPlayer p, int source, int target)
         {
-            ItemStack i_source = p.inventory.getStackInSlot(source);
-            ItemStack i_target = p.inventory.getStackInSlot(target);
+            final ItemStack L_I_SOURCE = p.inventory.getStackInSlot(source);
+            final ItemStack L_I_TARGET = p.inventory.getStackInSlot(target);
 
-            if (i_source != ItemStack.EMPTY || i_target != ItemStack.EMPTY)
+            if (L_I_SOURCE != ItemStack.EMPTY || L_I_TARGET != ItemStack.EMPTY)
             {
-                p.inventory.setInventorySlotContents(source, i_target);
-                p.inventory.setInventorySlotContents(target, i_source);
+                p.inventory.setInventorySlotContents(source, L_I_TARGET);
+                p.inventory.setInventorySlotContents(target, L_I_SOURCE);
             }
         }
     }
